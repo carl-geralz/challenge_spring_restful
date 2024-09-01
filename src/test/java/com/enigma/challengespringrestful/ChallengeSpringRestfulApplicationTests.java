@@ -8,6 +8,7 @@ class ChallengeSpringRestfulApplicationTests {
 
     @Test
     void contextLoads() {
+        // empty
     }
 
 }

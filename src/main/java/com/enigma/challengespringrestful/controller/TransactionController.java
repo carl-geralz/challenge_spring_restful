@@ -7,8 +7,10 @@ import com.enigma.challengespringrestful.dto.request.TransactionDTORequest;
 import com.enigma.challengespringrestful.dto.response.CommonResponse;
 import com.enigma.challengespringrestful.entity.Transaction;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +18,8 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(APIURL.TRANSACTION)
+@Validated
+@AutoConfigureRestDocs
 public class TransactionController {
     private final TransactionDAO transactionDAO;
 

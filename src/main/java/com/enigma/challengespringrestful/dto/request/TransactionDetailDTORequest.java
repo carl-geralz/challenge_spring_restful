@@ -7,27 +7,26 @@ import lombok.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-/**
- * DTO for {@link com.enigma.challengespringrestful.entity.TransactionDetail}
- */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TransactionDetailDTORequest implements Serializable {
     @NotNull
     @NotEmpty
     @NotBlank
-    String id;
+    private String id;
+
     @NotNull
     @PositiveOrZero
-    BigDecimal invoiceQty;
+    private BigDecimal invoiceQty;
+
     @Positive
-    BigDecimal vatPercentage;
+    private BigDecimal vatPercentage;
+
     @NotNull
     @Positive
-    BigDecimal invoicePrice;
+    private BigDecimal invoicePrice;
 }

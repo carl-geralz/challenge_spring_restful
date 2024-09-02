@@ -6,6 +6,7 @@ import com.enigma.challengespringrestful.dto.response.RegisterResponse;
 
 public interface AuthDAO {
     RegisterResponse register(AuthRequest request);
+
     LoginResponse login(AuthRequest request);
 }
 

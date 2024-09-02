@@ -9,9 +9,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * DTO for {@link com.enigma.challengespringrestful.entity.Discount}
- */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

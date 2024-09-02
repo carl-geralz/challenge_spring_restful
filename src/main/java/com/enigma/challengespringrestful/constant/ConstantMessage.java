@@ -13,4 +13,6 @@ public class ConstantMessage {
     public static final String FORBIDDEN = "Forbidden";
     public static final String CONFLICT = "Conflict";
     public static final String INTERNAL_SERVER_ERROR = "Internal Server Error";
+    public static final String UNREACHABLE = "Service Unreachable";
+    public static final String HIGH_MEMORY_USAGE = "High memory usage";
 }

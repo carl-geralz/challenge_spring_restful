@@ -40,7 +40,7 @@ public class Product {
     @Column(name = "sales_price", precision = 10, scale = 2, nullable = false)
     private BigDecimal salesPrice;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<TransactionDetail> transactionDetails;
 

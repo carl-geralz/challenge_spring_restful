@@ -7,8 +7,10 @@ import com.enigma.challengespringrestful.dto.request.DiscountDTORequest;
 import com.enigma.challengespringrestful.dto.response.CommonResponse;
 import com.enigma.challengespringrestful.entity.Discount;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +18,8 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(APIURL.DISCOUNT)
+@Validated
+@AutoConfigureRestDocs
 public class DiscountController {
     private final DiscountDAO discountDAO;
 
@@ -62,5 +66,4 @@ public class DiscountController {
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(commonResponse);
     }
-
 }

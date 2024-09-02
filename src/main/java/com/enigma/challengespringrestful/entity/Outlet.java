@@ -26,7 +26,7 @@ public class Outlet {
     @Column(name = "location", nullable = false)
     private String location;
 
-    @OneToMany(mappedBy = "outlet")
+    @OneToMany(mappedBy = "outlet", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<TransactionDetail> transactionDetails;
 

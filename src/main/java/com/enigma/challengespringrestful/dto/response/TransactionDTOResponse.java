@@ -7,18 +7,14 @@ import lombok.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-/**
- * DTO for {@link com.enigma.challengespringrestful.entity.Transaction}
- */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TransactionDTOResponse implements Serializable {
-    String id;
-    LocalDateTime invoiceDate;
-    Customer customer;
+    private String id;
+    private LocalDateTime invoiceDate;
+    private Customer customer;
 }

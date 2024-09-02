@@ -1,13 +1,13 @@
 package com.enigma.challengespringrestful.repository;
 
-import java.util.Optional;
-
+import com.enigma.challengespringrestful.constant.ConstantUserRole;
+import com.enigma.challengespringrestful.entity.UserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.enigma.challengespringrestful.entity.UserRole;
+import java.util.Optional;
 
 @Repository
 public interface UserRoleRepository extends JpaRepository<UserRole, String> {
-    Optional<UserRole> findAllByRole(String role);
+    Optional<UserRole> findAllByRole(ConstantUserRole role);
 }

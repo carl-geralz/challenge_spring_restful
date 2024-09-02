@@ -6,19 +6,41 @@ import lombok.*;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
-/**
- * DTO for {@link com.enigma.challengespringrestful.entity.CustomerAcquisition}
- */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
 @Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CustomerAcquisitionDTOResponse implements Serializable {
-    String id;
-    String name;
-    List<Customer> customers;
+
+    private String id;
+    private String name;
+    private List<Customer> customers;
+
+    @Override
+    public String toString() {
+        return "CustomerAcquisitionDTOResponse{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", customers=" + customers +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CustomerAcquisitionDTOResponse that = (CustomerAcquisitionDTOResponse) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(customers, that.customers);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, customers);
+    }
 }

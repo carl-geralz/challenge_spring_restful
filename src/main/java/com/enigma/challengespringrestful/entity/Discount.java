@@ -40,8 +40,7 @@ public class Discount {
     @Column(name = "discount_percentage", precision = 10, scale = 2, nullable = false)
     private BigDecimal discountPercentage;
 
-    @OneToMany(mappedBy = "discount")
+    @OneToMany(mappedBy = "discount", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Product> products;
-
 }

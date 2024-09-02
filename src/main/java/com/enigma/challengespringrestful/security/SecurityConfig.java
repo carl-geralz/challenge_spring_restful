@@ -21,8 +21,6 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity.httpBasic(AbstractHttpConfigurer::disable).csrf(AbstractHttpConfigurer::disable).sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).authorizeHttpRequests(req -> req.dispatcherTypeMatchers(DispatcherType.ERROR).permitAll().requestMatchers("/api/v1/auth/**").permitAll().anyRequest().authenticated()).addFilterBefore(authenticationFilter,
-                UsernamePasswordAuthenticationFilter.class
-        ).build();
+        return httpSecurity.httpBasic(AbstractHttpConfigurer::disable).csrf(AbstractHttpConfigurer::disable).sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).authorizeHttpRequests(req -> req.dispatcherTypeMatchers(DispatcherType.ERROR).permitAll().requestMatchers("/api/v1/auth/**").permitAll().anyRequest().authenticated()).addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class).build();
     }
 }

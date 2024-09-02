@@ -44,8 +44,7 @@ public class Customer {
     @Column(name = "status")
     private Boolean status;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_account_id", unique = true)
     private UserAccount userAccount;
-
 }

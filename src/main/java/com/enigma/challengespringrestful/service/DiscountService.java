@@ -1,45 +1,36 @@
 package com.enigma.challengespringrestful.service;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-
 import com.enigma.challengespringrestful.constant.ConstantMessage;
 import com.enigma.challengespringrestful.dao.DiscountDAO;
 import com.enigma.challengespringrestful.dto.request.DiscountDTORequest;
 import com.enigma.challengespringrestful.entity.Discount;
 import com.enigma.challengespringrestful.repository.DiscountRepository;
 import com.enigma.challengespringrestful.utils.ValidationUtils;
-
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class DiscountService implements DiscountDAO {
 
     private final DiscountRepository discountRepository;
+    @Getter
     private final ValidationUtils validationUtils;
 
-    /**
-     * @param discountDTORequest
-     * @return
-     */
     @Override
     public Discount create(DiscountDTORequest discountDTORequest) {
-        validationUtils.validate(discountDTORequest);
-        Discount discount = Discount.builder()
-                .id(discountDTORequest.getId())
-                .build();
+        validateDiscountDTORequest(discountDTORequest);
+
+        Discount discount = Discount.builder().id(discountDTORequest.getId()).name(discountDTORequest.getName()).startDate(discountDTORequest.getStartDate()).endDate(discountDTORequest.getEndDate()).isActive(discountDTORequest.getIsActive()).discountPercentage(discountDTORequest.getDiscountPercentage()).build();
         return discountRepository.saveAndFlush(discount);
     }
 
-    /**
-     * @param id
-     * @return
-     */
     @Override
     public Discount findById(String id) {
         Optional<Discount> optionalDiscount = discountRepository.findById(id);
@@ -49,9 +40,6 @@ public class DiscountService implements DiscountDAO {
         return optionalDiscount.get();
     }
 
-    /**
-     * @return
-     */
     @Override
     public List<Discount> findAll(String name) {
         if (name != null && !name.isEmpty()) {
@@ -60,25 +48,31 @@ public class DiscountService implements DiscountDAO {
         return discountRepository.findAll();
     }
 
-    /**
-     * @param discountDTORequest
-     * @return
-     */
     @Override
     public Discount update(DiscountDTORequest discountDTORequest) {
-        validationUtils.validate(discountDTORequest);
+        validateDiscountDTORequest(discountDTORequest);
+
         Discount existingDiscount = findById(discountDTORequest.getId());
         existingDiscount.setName(discountDTORequest.getName());
+        existingDiscount.setStartDate(discountDTORequest.getStartDate());
+        existingDiscount.setEndDate(discountDTORequest.getEndDate());
+        existingDiscount.setIsActive(discountDTORequest.getIsActive());
+        existingDiscount.setDiscountPercentage(discountDTORequest.getDiscountPercentage());
         return discountRepository.saveAndFlush(existingDiscount);
     }
 
-    /**
-     * @param id
-     */
     @Override
     public void deleteById(String id) {
-        Discount currentlySelectedDiscountID = findById(id);
-        discountRepository.delete(currentlySelectedDiscountID);
+        Discount currentlySelectedDiscount = findById(id);
+        discountRepository.delete(currentlySelectedDiscount);
     }
 
+    private void validateDiscountDTORequest(DiscountDTORequest request) {
+        if (ValidationUtils.isNotEmpty(request.getId())) {
+            throw new IllegalArgumentException("ID cannot be empty");
+        }
+        if (ValidationUtils.isNotEmpty(request.getName())) {
+            throw new IllegalArgumentException("Name cannot be empty");
+        }
+    }
 }

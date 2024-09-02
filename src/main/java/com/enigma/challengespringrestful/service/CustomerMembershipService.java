@@ -1,11 +1,12 @@
 package com.enigma.challengespringrestful.service;
 
 import com.enigma.challengespringrestful.constant.ConstantMessage;
+import com.enigma.challengespringrestful.dao.CustomerMembershipDAO;
 import com.enigma.challengespringrestful.dto.request.CustomerMembershipDTORequest;
 import com.enigma.challengespringrestful.entity.CustomerMembership;
 import com.enigma.challengespringrestful.repository.CustomerMembershipRepository;
-import com.enigma.challengespringrestful.dao.CustomerMembershipDAO;
 import com.enigma.challengespringrestful.utils.ValidationUtils;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -19,25 +20,17 @@ import java.util.Optional;
 public class CustomerMembershipService implements CustomerMembershipDAO {
 
     private final CustomerMembershipRepository customerMembershipRepository;
+    @Getter
     private final ValidationUtils validationUtils;
 
-    /**
-     * @param customerMembershipDTORequest
-     * @return
-     */
     @Override
     public CustomerMembership create(CustomerMembershipDTORequest customerMembershipDTORequest) {
-        validationUtils.validate(customerMembershipDTORequest);
-        CustomerMembership customerMembership = CustomerMembership.builder()
-                .id(customerMembershipDTORequest.getId())
-                .build();
+        validateCustomerMembershipDTORequest(customerMembershipDTORequest);
+
+        CustomerMembership customerMembership = CustomerMembership.builder().id(customerMembershipDTORequest.getId()).build();
         return customerMembershipRepository.saveAndFlush(customerMembership);
     }
 
-    /**
-     * @param id
-     * @return
-     */
     @Override
     public CustomerMembership findById(String id) {
         Optional<CustomerMembership> optionalCustomerMembership = customerMembershipRepository.findById(id);
@@ -47,9 +40,6 @@ public class CustomerMembershipService implements CustomerMembershipDAO {
         return optionalCustomerMembership.get();
     }
 
-    /**
-     * @return
-     */
     @Override
     public List<CustomerMembership> findAll(String name) {
         if (name != null && !name.isEmpty()) {
@@ -58,25 +48,27 @@ public class CustomerMembershipService implements CustomerMembershipDAO {
         return customerMembershipRepository.findAll();
     }
 
-    /**
-     * @param customerMembershipDTORequest
-     * @return
-     */
     @Override
     public CustomerMembership update(CustomerMembershipDTORequest customerMembershipDTORequest) {
-        validationUtils.validate(customerMembershipDTORequest);
+        validateCustomerMembershipDTORequest(customerMembershipDTORequest);
+
         CustomerMembership existingCustomerMembership = findById(customerMembershipDTORequest.getId());
         existingCustomerMembership.setName(customerMembershipDTORequest.getName());
         return customerMembershipRepository.saveAndFlush(existingCustomerMembership);
     }
 
-    /**
-     * @param id
-     */
     @Override
     public void deleteById(String id) {
-        CustomerMembership currentlySelectedCustomerMembershipID = findById(id);
-        customerMembershipRepository.delete(currentlySelectedCustomerMembershipID);
+        CustomerMembership currentlySelectedCustomerMembership = findById(id);
+        customerMembershipRepository.delete(currentlySelectedCustomerMembership);
     }
 
+    private void validateCustomerMembershipDTORequest(CustomerMembershipDTORequest request) {
+        if (ValidationUtils.isNotEmpty(request.getId())) {
+            throw new IllegalArgumentException("ID cannot be empty");
+        }
+        if (ValidationUtils.isNotEmpty(request.getName())) {
+            throw new IllegalArgumentException("Name cannot be empty");
+        }
+    }
 }

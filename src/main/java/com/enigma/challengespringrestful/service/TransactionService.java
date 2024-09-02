@@ -1,17 +1,17 @@
 package com.enigma.challengespringrestful.service;
 
 import com.enigma.challengespringrestful.constant.ConstantMessage;
+import com.enigma.challengespringrestful.dao.TransactionDAO;
 import com.enigma.challengespringrestful.dto.request.TransactionDTORequest;
 import com.enigma.challengespringrestful.entity.Transaction;
 import com.enigma.challengespringrestful.repository.TransactionRepository;
-import com.enigma.challengespringrestful.dao.TransactionDAO;
 import com.enigma.challengespringrestful.utils.ValidationUtils;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,25 +20,17 @@ import java.util.Optional;
 public class TransactionService implements TransactionDAO {
 
     private final TransactionRepository transactionRepository;
+    @Getter
     private final ValidationUtils validationUtils;
 
-    /**
-     * @param transactionDTORequest
-     * @return
-     */
     @Override
     public Transaction create(TransactionDTORequest transactionDTORequest) {
-        validationUtils.validate(transactionDTORequest);
-        Transaction transaction = Transaction.builder()
-                .id(transactionDTORequest.getId())
-                .build();
+        validateTransactionDTORequest(transactionDTORequest);
+
+        Transaction transaction = Transaction.builder().id(transactionDTORequest.getId()).build();
         return transactionRepository.saveAndFlush(transaction);
     }
 
-    /**
-     * @param id
-     * @return
-     */
     @Override
     public Transaction findById(String id) {
         Optional<Transaction> optionalTransaction = transactionRepository.findById(id);
@@ -48,33 +40,32 @@ public class TransactionService implements TransactionDAO {
         return optionalTransaction.get();
     }
 
-    /**
-     * @return
-     */
     @Override
     public List<Transaction> findAll(String invoiceDate) {
         return transactionRepository.findAll();
     }
 
-    /**
-     * @param transactionDTORequest
-     * @return
-     */
     @Override
     public Transaction update(TransactionDTORequest transactionDTORequest) {
-        validationUtils.validate(transactionDTORequest);
+        validateTransactionDTORequest(transactionDTORequest);
+
         Transaction existingTransaction = findById(transactionDTORequest.getId());
         existingTransaction.setId(transactionDTORequest.getId());
         return transactionRepository.saveAndFlush(existingTransaction);
     }
 
-    /**
-     * @param id
-     */
     @Override
     public void deleteById(String id) {
-        Transaction currentlySelectedTransactionID = findById(id);
-        transactionRepository.delete(currentlySelectedTransactionID);
+        Transaction currentlySelectedTransaction = findById(id);
+        transactionRepository.delete(currentlySelectedTransaction);
     }
 
+    private void validateTransactionDTORequest(TransactionDTORequest request) {
+        if (ValidationUtils.isNotEmpty(request.getId())) {
+            throw new IllegalArgumentException("ID cannot be empty");
+        }
+        if (request.getInvoiceDate() == null) {
+            throw new IllegalArgumentException("Invoice date cannot be null");
+        }
+    }
 }

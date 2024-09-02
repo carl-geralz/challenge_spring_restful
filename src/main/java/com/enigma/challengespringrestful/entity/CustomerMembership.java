@@ -39,11 +39,11 @@ public class CustomerMembership {
     @Column(name = "monthly_fee", precision = 10, scale = 2, nullable = false)
     private BigDecimal monthlyFee;
 
-    @OneToMany(mappedBy = "customerMembership")
+    @OneToMany(mappedBy = "customerMembership", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<TransactionDetail> transactionDetails;
 
-    @OneToMany(mappedBy = "customerMembership")
+    @OneToMany(mappedBy = "customerMembership", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Customer> customers;
 

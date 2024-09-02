@@ -1,7 +1,6 @@
 package com.enigma.challengespringrestful.repository;
 
 import com.enigma.challengespringrestful.entity.CustomerAcquisition;
-import com.enigma.challengespringrestful.entity.CustomerMembership;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

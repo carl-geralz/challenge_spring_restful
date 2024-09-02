@@ -8,27 +8,25 @@ import lombok.*;
 
 import java.io.Serializable;
 
-/**
- * DTO for {@link com.enigma.challengespringrestful.entity.Outlet}
- */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OutletDTORequest implements Serializable {
     @NotNull
     @NotEmpty
     @NotBlank
-    String id;
+    private String id;
+
     @NotNull
     @NotEmpty
     @NotBlank
-    String name;
+    private String name;
+
     @NotNull
     @NotEmpty
     @NotBlank
-    String location;
+    private String location;
 }

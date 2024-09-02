@@ -17,6 +17,6 @@ public class UserRoleService implements UserRoleDAO {
     @Override
     public UserRole getOrSave(ConstantUserRole role) {
         UserRoleRepository repository = userRoleRepository;
-        return repository.findAllByRole(String.valueOf(role)).orElseGet(() -> repository.saveAndFlush(UserRole.builder().role(role).build()));
+        return repository.findAllByRole(ConstantUserRole.valueOf(String.valueOf(role))).orElseGet(() -> repository.saveAndFlush(UserRole.builder().role(role).build()));
     }
 }

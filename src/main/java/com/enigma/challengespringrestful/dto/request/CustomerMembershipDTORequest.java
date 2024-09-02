@@ -8,36 +8,37 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-/**
- * DTO for {@link com.enigma.challengespringrestful.entity.CustomerMembership}
- */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CustomerMembershipDTORequest implements Serializable {
     @NotNull
     @NotEmpty
     @NotBlank
-    String id;
+    private String id;
+
     @NotNull
     @NotEmpty
     @NotBlank
-    String name;
+    private String name;
+
     @NotNull
     @FutureOrPresent
-    LocalDateTime startDate;
+    private LocalDateTime startDate;
+
     @NotNull
-    Boolean isActive;
+    private Boolean isActive;
+
     @NotNull
     @Min(20)
     @Max(50)
     @Positive
-    BigDecimal discountPercentage;
+    private BigDecimal discountPercentage;
+
     @NotNull
     @PositiveOrZero
-    BigDecimal monthlyFee;
+    private BigDecimal monthlyFee;
 }

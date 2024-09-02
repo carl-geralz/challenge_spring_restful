@@ -1,11 +1,12 @@
 package com.enigma.challengespringrestful.service;
 
 import com.enigma.challengespringrestful.constant.ConstantMessage;
+import com.enigma.challengespringrestful.dao.TransactionDetailDAO;
 import com.enigma.challengespringrestful.dto.request.TransactionDetailDTORequest;
 import com.enigma.challengespringrestful.entity.TransactionDetail;
 import com.enigma.challengespringrestful.repository.TransactionDetailRepository;
-import com.enigma.challengespringrestful.dao.TransactionDetailDAO;
 import com.enigma.challengespringrestful.utils.ValidationUtils;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -19,25 +20,17 @@ import java.util.Optional;
 public class TransactionDetailService implements TransactionDetailDAO {
 
     private final TransactionDetailRepository transactionDetailRepository;
+    @Getter
     private final ValidationUtils validationUtils;
 
-    /**
-     * @param transactionDetailDTORequest
-     * @return
-     */
     @Override
     public TransactionDetail create(TransactionDetailDTORequest transactionDetailDTORequest) {
-        validationUtils.validate(transactionDetailDTORequest);
-        TransactionDetail transactionDetail = TransactionDetail.builder()
-                .id(transactionDetailDTORequest.getId())
-                .build();
+        validateTransactionDetailDTORequest(transactionDetailDTORequest);
+
+        TransactionDetail transactionDetail = TransactionDetail.builder().id(transactionDetailDTORequest.getId()).invoiceQty(transactionDetailDTORequest.getInvoiceQty()).vatPercentage(transactionDetailDTORequest.getVatPercentage()).invoicePrice(transactionDetailDTORequest.getInvoicePrice()).build();
         return transactionDetailRepository.saveAndFlush(transactionDetail);
     }
 
-    /**
-     * @param id
-     * @return
-     */
     @Override
     public TransactionDetail findById(String id) {
         Optional<TransactionDetail> optionalTransactionDetail = transactionDetailRepository.findById(id);
@@ -47,36 +40,37 @@ public class TransactionDetailService implements TransactionDetailDAO {
         return optionalTransactionDetail.get();
     }
 
-    /**
-     * @return
-     */
     @Override
-    public List<TransactionDetail> findAll(String id) {
-        if (id != null && !id.isEmpty()) {
-            return transactionDetailRepository.findAllByIdLike("%" + id + "%");
+    public List<TransactionDetail> findAll(String name) {
+        if (name != null && !name.isEmpty()) {
+            return transactionDetailRepository.findAllByIdLike("%" + name + "%");
         }
         return transactionDetailRepository.findAll();
     }
 
-    /**
-     * @param transactionDetailDTORequest
-     * @return
-     */
     @Override
     public TransactionDetail update(TransactionDetailDTORequest transactionDetailDTORequest) {
-        validationUtils.validate(transactionDetailDTORequest);
+        validateTransactionDetailDTORequest(transactionDetailDTORequest);
+
         TransactionDetail existingTransactionDetail = findById(transactionDetailDTORequest.getId());
+        existingTransactionDetail.setInvoiceQty(transactionDetailDTORequest.getInvoiceQty());
         existingTransactionDetail.setVatPercentage(transactionDetailDTORequest.getVatPercentage());
+        existingTransactionDetail.setInvoicePrice(transactionDetailDTORequest.getInvoicePrice());
         return transactionDetailRepository.saveAndFlush(existingTransactionDetail);
     }
 
-    /**
-     * @param id
-     */
     @Override
     public void deleteById(String id) {
-        TransactionDetail currentlySelectedTransactionDetailID = findById(id);
-        transactionDetailRepository.delete(currentlySelectedTransactionDetailID);
+        TransactionDetail currentlySelectedTransactionDetail = findById(id);
+        transactionDetailRepository.delete(currentlySelectedTransactionDetail);
     }
 
+    private void validateTransactionDetailDTORequest(TransactionDetailDTORequest request) {
+        if (request.getId() == null || request.getId().isEmpty()) {
+            throw new IllegalArgumentException("ID cannot be empty");
+        }
+        if (request.getVatPercentage() == null) {
+            throw new IllegalArgumentException("VAT percentage cannot be null");
+        }
+    }
 }

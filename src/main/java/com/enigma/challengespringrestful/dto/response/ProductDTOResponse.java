@@ -9,24 +9,20 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
-/**
- * DTO for {@link com.enigma.challengespringrestful.entity.Product}
- */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ProductDTOResponse implements Serializable {
-    String id;
-    String name;
-    BigDecimal inventoryQty;
-    BigDecimal purchasePrice;
-    BigDecimal retailPrice;
-    String description;
-    BigDecimal salesPrice;
-    List<TransactionDetail> transactionDetails;
-    Discount discount;
+    private String id;
+    private String name;
+    private BigDecimal inventoryQty;
+    private BigDecimal purchasePrice;
+    private BigDecimal retailPrice;
+    private String description;
+    private BigDecimal salesPrice;
+    private List<TransactionDetail> transactionDetails;
+    private Discount discount;
 }

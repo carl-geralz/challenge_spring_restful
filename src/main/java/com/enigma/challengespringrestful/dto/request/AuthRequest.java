@@ -6,14 +6,10 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-///**
-// * DTO for {@link com.enigma.challengesprintrestful.entity.UserRole}
-// */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AuthRequest {
@@ -21,6 +17,7 @@ public class AuthRequest {
     @NotBlank
     @NotEmpty
     private String username;
+
     @NotNull
     @NotBlank
     @NotEmpty

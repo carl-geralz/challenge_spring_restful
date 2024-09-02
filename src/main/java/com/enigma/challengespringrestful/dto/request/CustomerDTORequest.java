@@ -9,28 +9,26 @@ import lombok.*;
 
 import java.io.Serializable;
 
-/**
- * DTO for {@link com.enigma.challengespringrestful.entity.Customer}
- */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CustomerDTORequest implements Serializable {
     @NotNull
     @NotEmpty
     @NotBlank
-    String id;
+    private String id;
+
     @NotNull
     @NotEmpty
     @NotBlank
-    String name;
+    private String name;
+
     @NotNull
     @Pattern(regexp = "^(\\+62|62|0)([2-9][0-9]{7,8})$")
     @NotEmpty
     @NotBlank
-    String phoneNumber;
+    private String phoneNumber;
 }

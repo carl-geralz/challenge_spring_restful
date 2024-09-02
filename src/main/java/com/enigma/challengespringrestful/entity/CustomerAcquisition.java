@@ -16,15 +16,14 @@ import java.util.List;
 @Builder
 public class CustomerAcquisition {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false)
     private String id;
 
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "customerAcquisition")
+    @OneToMany(mappedBy = "customerAcquisition", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Customer> customers;
-
 }
